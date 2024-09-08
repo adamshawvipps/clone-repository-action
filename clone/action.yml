@@ -18,7 +18,7 @@ jobs:
         id: determine_target
         run: |
           source_repo="${{ github.repository }}"
-          target_repo=$(jq -r --arg src "$source_repo" '.[$src]' central-repo/.github/repo-mappings.json)
+          target_repo=$(jq -r --arg src "$source_repo" '.[$src]' clone/repo-mappings.json)
 
           if [ -z "$target_repo" ]; then
             echo "No target repository found for $source_repo"
