@@ -28,17 +28,17 @@ jobs:
             echo "No target repository found for $source_repo"
             exit 1
           fi
-
+          echo "TARGET_REPO=${target_repo}"
           echo "TARGET_REPO=${target_repo}" >> $GITHUB_ENV
 
-      - name: Clone target repository
-        run: |
-          git clone https://github.com/${{ env.TARGET_REPO }} target-repo
-          cd target-repo
-          # Optionally, clear the repository and copy new files
-          rm -rf *
-          cp -r ../source-repo/. .
-          git add .
-          git commit -m "Sync from ${{ github.repository }}"
-          git push origin main
+#      - name: Clone target repository
+ #       run: |
+  #        git clone https://github.com/${{ env.TARGET_REPO }} target-repo
+   #       cd target-repo
+    #      # Optionally, clear the repository and copy new files
+     #     rm -rf *
+      #    cp -r ../source-repo/. .
+       #   git add .
+        #  git commit -m "Sync from ${{ github.repository }}"
+         # git push origin main
 
