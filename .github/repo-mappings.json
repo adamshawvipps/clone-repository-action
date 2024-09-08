@@ -1,4 +1,4 @@
-// .github/repo-mappings.json
+
 {
   "source-repo-A": "target-repo-A",
   "source-repo-B": "target-repo-B",
