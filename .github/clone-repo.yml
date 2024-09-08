@@ -1,0 +1,44 @@
+name: Centralized Clone Workflow
+
+on:
+  workflow_call:
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+
+jobs:
+  clone-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout central repository with configuration
+        uses: actions/checkout@v3
+        with:
+          repository: your-org/central-repo  # Replace with the repository containing this workflow
+          path: central-repo
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Determine target repository based on source repository
+        id: determine_target
+        run: |
+          source_repo="${{ github.repository }}"
+          target_repo=$(jq -r --arg src "$source_repo" '.[$src]' central-repo/.github/repo-mappings.json)
+
+          if [ -z "$target_repo" ]; then
+            echo "No target repository found for $source_repo"
+            exit 1
+          fi
+
+          echo "TARGET_REPO=${target_repo}" >> $GITHUB_ENV
+
+      - name: Clone target repository
+        run: |
+          git clone https://github.com/${{ env.TARGET_REPO }} target-repo
+          cd target-repo
+          # Optionally, clear the repository and copy new files
+          rm -rf *
+          cp -r ../source-repo/. .
+          git add .
+          git commit -m "Sync from ${{ github.repository }}"
+          git push origin main
+
