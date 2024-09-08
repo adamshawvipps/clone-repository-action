@@ -13,10 +13,6 @@ jobs:
     steps:
       - name: Checkout central repository with configuration
         uses: actions/checkout@v3
-        with:
-          repository: your-org/central-repo  # Replace with the repository containing this workflow
-          path: central-repo
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Determine target repository based on source repository
         id: determine_target
